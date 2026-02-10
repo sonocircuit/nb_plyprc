@@ -67,8 +67,9 @@ local function add_plyprc_params()
 
   params:add_separator("nb_plyprc_mod", "modulation")
 
-  params:add_control("nb_plyprc_mod_depth", "mod depth", controlspec.new(0, 1, "lin", 0, 0), function(param) return round_form(param:get() * 100, 1, "%") end)
-  params:set_action("nb_plyprc_mod_depth", function(val) set_param('mod_depth', val) end)
+  params:add_control("nb_plyprc_mod_amt", "mod amt [map me]", controlspec.new(0, 1, "lin", 0, 0), function(param) return round_form(param:get() * 100, 1, "%") end)
+  params:set_action("nb_plyprc_mod_amt", function(val) set_param('mod_depth', val) end)
+  params:set_save("nb_plyprc_mod_amt", false)
 
   params:add_control("nb_plyprc_pw_mod", "pulse width", controlspec.new(-1, 1, "lin", 0, 0, "", 1/200), function(param) return round_form(param:get() * 100, 1, "%") end)
   params:set_action("nb_plyprc_pw_mod", function(val) set_param('pw_mod', val) end)
