@@ -139,7 +139,7 @@ function add_nb_plyprc_player()
   end
 
   function player:modulate(val)
-    params:set("nb_plyprc_mod_depth", val)
+    params:set("nb_plyprc_mod_amt", val)
   end
 
   function player:set_slew(s)
