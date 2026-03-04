@@ -32,7 +32,7 @@ local function round_form(param, quant, form)
 end
 
 local function add_plyprc_params()
-  params:add_group("nb_plyprc_group", "plyprc", 17)
+  params:add_group("nb_plyprc_group", "plyprc", 19)
   params:hide("nb_plyprc_group")
 
   params:add_separator("nb_plyprc_levels", "levels")
@@ -50,8 +50,11 @@ local function add_plyprc_params()
 
   params:add_separator("nb_plyprc_sound", "sound")
 
-  params:add_control("nb_plyprc_decay", "decay", controlspec.new(0.01, 10, "exp", 0, 1.2), function(param) return (round_form(param:get(),0.01," s")) end)
-  params:set_action("nb_plyprc_decay", function(val) set_param('decay', val) end)
+  params:add_number("nb_plyprc_pitchbend", "pitchbend", 1, 24, 7, function(param) return param:get().."st" end)
+  params:set_action("nb_plyprc_pitchbend", function(val) set_param('pitchBend', val) end)
+
+  params:add_control("nb_plyprc_glide", "glide", controlspec.new(0, 1, "lin", 0, 0, "", 1/500), function(param) return round_form(param:get() * 1000, 1, "ms") end)
+  params:set_action("nb_plyprc_glide", function(val) set_param('glide', val) end)
 
   params:add_control("nb_plyprc_pulse_width", "pulse width", controlspec.new(0.1, 0.9, "lin", 0, 0.5), function(param) return round_form(param:get() * 100, 1, "%") end)
   params:set_action("nb_plyprc_pulse_width", function(val) set_param('pw', val) end)
@@ -64,6 +67,9 @@ local function add_plyprc_params()
 
   params:add_control("nb_plyprc_res_lpf", "resonance", controlspec.new(0, 1, "lin", 0, 0.1), function(param) return round_form(param:get() * 100, 1, "%") end)
   params:set_action("nb_plyprc_res_lpf", function(val) set_param('res_lpf', val) end)
+
+  params:add_control("nb_plyprc_decay", "decay", controlspec.new(0.01, 10, "exp", 0, 1.2), function(param) return (round_form(param:get(),0.01," s")) end)
+  params:set_action("nb_plyprc_decay", function(val) set_param('decay', val) end)
 
   params:add_separator("nb_plyprc_mod", "modulation")
 
@@ -153,7 +159,8 @@ function add_nb_plyprc_player()
     }
   end
 
-  function player:pitch_bend(note, amount)
+  function player:pitch_bend(note, val)
+    set_param('bendDepth', val)
   end
 
   function player:modulate_note(note, key, value) 
